@@ -51,11 +51,6 @@ void SortingAlogrithms::selectionSort()
 	}
 }
 
-bool SortingAlogrithms::isFinished() const
-{
-	return mFinished;
-}
-
 void SortingAlogrithms::swap(int a, int b)
 {
 	std::swap(mNumbers[a], mNumbers[b]);

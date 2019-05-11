@@ -20,8 +20,6 @@ public:
 	void bubbleSort();
 	void selectionSort();
 
-	bool isFinished() const;
-
 private:
 	void swap(int a, int b);
 };
