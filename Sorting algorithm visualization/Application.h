@@ -11,12 +11,12 @@ private:
 	sf::RenderWindow mWindow;
 
 	int mMax;
-	vector<sf::RectangleShape> mColumns;
-	SortingAlogrithms mAlgorithms;
-	thread mSortingThread;
+	vector<sf::RectangleShape> mColumns[2];
+	SortingAlogrithms mAlgorithms[2];
+	thread mSortingThreads[2];
 
-	pair<int, int> mLastComparison;
-	bool mFirstComparison;
+	pair<int, int> mLastComparison[2];
+	bool mFirstComparison[2];
 
 	static const sf::Time TimePerFrame;
 
@@ -27,6 +27,6 @@ public:
 
 private:
 	void draw();
-	void onSwap(int a, int b);
-	void onComparison(int a, int b);
+	void onSwap(int index, int a, int b);
+	void onComparison(int index, int a, int b);
 };

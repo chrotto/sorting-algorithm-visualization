@@ -12,7 +12,6 @@ public:
 private:
 	vector<int> mNumbers;
 	int mDelay;
-	bool mFinished;
 
 public:
 	void initialize(vector<int> numbers, int delay = 500);
