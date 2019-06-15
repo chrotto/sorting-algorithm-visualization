@@ -124,11 +124,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Visualizer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SortingAlgorithms.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Visualizer.h" />
     <ClInclude Include="Signal.h" />
     <ClInclude Include="SortingAlgorithms.h" />
   </ItemGroup>

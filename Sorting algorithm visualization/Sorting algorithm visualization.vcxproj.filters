@@ -21,6 +21,9 @@
     <ClCompile Include="SortingAlgorithms.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="Visualizer.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
     <ClCompile Include="Application.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
@@ -30,6 +33,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="SortingAlgorithms.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="Visualizer.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">

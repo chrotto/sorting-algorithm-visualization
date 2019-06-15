@@ -21,6 +21,7 @@ void SortingAlogrithms::bubbleSort()
 		for (int i = 0; i < end; i++)
 		{
 			mComparison.emit(i, i + 1);
+			this_thread::sleep_for(chrono::milliseconds(mDelay));
 			if (mNumbers[i] > mNumbers[i + 1])
 			{
 				sorted = false;
@@ -39,6 +40,7 @@ void SortingAlogrithms::selectionSort()
 		for (int j = i + 1; j < mNumbers.size(); j++)
 		{
 			mComparison.emit(min, j);
+			this_thread::sleep_for(chrono::milliseconds(mDelay));
 			if (mNumbers[min] > mNumbers[j])
 				min = j;
 		}
