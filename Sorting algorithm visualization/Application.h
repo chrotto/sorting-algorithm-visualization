@@ -9,7 +9,13 @@ private:
 	sf::RenderWindow mWindow;
 
 	int mMax;
+	int mMaxColumns;
+	int mColumns;
+	int mRows;
+	const double mBorder;
+	double mWidth, mHeight;
 	vector<unique_ptr<Visualizer>> mVisualizers;
+	vector<int> mRandomNumbers;
 
 	static const sf::Time TimePerFrame;
 
@@ -20,5 +26,7 @@ public:
 
 private:
 	void render();
+	void registerVisualizers();
+	void initializeRandomNumbers();
 };
 

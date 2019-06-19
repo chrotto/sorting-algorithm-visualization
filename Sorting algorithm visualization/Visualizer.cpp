@@ -14,7 +14,7 @@ Visualizer::Visualizer(SortingAlogrithms instance, void(SortingAlogrithms::*func
 		mColumns.push_back(createColumn(columnWidth, columnHeight));
 	}
 
-	mAlgorithm.initialize(randomNumbers, 200);
+	mAlgorithm.initialize(randomNumbers, 50);
 	mAlgorithm.mSwap.connect(this, &Visualizer::onSwap);
 	mAlgorithm.mComparison.connect(this, &Visualizer::onComparison);
 

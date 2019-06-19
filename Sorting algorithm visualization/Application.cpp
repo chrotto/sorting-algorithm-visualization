@@ -4,15 +4,17 @@
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.0f / 60.0f);
 
-Application::Application() : mWindow(sf::VideoMode(1920, 1080), "Sorting Algorithms Visualization"), mMax(20)
+Application::Application() : mWindow(sf::VideoMode(1920, 1080), "Sorting Algorithms Visualization"), mMax(20), mMaxColumns(5), mBorder(0.01)
 {
-	srand(time(nullptr));
-	vector<int> randomNumbers;
-	for (int i = 0; i < mMax; i++)
-		randomNumbers.push_back(rand() % 9 + 1);
+	initializeRandomNumbers();
+	registerVisualizers();
 
-	mVisualizers.push_back(unique_ptr<Visualizer>(new Visualizer(SortingAlogrithms(), &SortingAlogrithms::bubbleSort, randomNumbers, mWindow)));
-	mVisualizers.push_back(unique_ptr<Visualizer>(new Visualizer(SortingAlogrithms(), &SortingAlogrithms::selectionSort, randomNumbers, mWindow)));
+	mColumns = ceil((double)mVisualizers.size() / 2);
+	mColumns = mColumns > mMaxColumns ? mMaxColumns : mColumns;
+	mRows = ceil((double)mVisualizers.size() / mColumns);
+
+	mWidth = 1.0f / mColumns - 2 * mBorder;
+	mHeight = 1.0f / mRows - 2 * mBorder;
 }
 
 void Application::run()
@@ -40,13 +42,36 @@ void Application::run()
 void Application::render()
 {
 	mWindow.clear();
-
-	for (int i = 0; i < 2; i++)
+	int row = 0;
+	int column = 0;
+	sf::View view = mWindow.getView();
+	for (auto& visualizer : mVisualizers)
 	{
-		sf::View view = mWindow.getView();
-		view.setViewport(sf::FloatRect(0, 0 + 0.51 * i, 1, 0.49));
+		if (column >= mColumns)
+		{
+			column = 0;
+			++row;
+		}
+		double left = (mWidth * column + mBorder * column * 2) + mBorder;
+		double top = (mHeight * row + mBorder * row * 2) + mBorder;
+		++column;
+
+		view.setViewport(sf::FloatRect(left, top, mWidth, mHeight));
 		mWindow.setView(view);
-		mWindow.draw(*mVisualizers[i]);
+		mWindow.draw(*visualizer);
 	}
 	mWindow.display();
+}
+
+void Application::registerVisualizers()
+{
+	mVisualizers.push_back(unique_ptr<Visualizer>(new Visualizer(SortingAlogrithms(), &SortingAlogrithms::bubbleSort, mRandomNumbers, mWindow)));
+	mVisualizers.push_back(unique_ptr<Visualizer>(new Visualizer(SortingAlogrithms(), &SortingAlogrithms::selectionSort, mRandomNumbers, mWindow)));
+}
+
+void Application::initializeRandomNumbers()
+{
+	srand(time(nullptr));
+	for (int i = 0; i < mMax; i++)
+		mRandomNumbers.push_back(rand() % 9 + 1);
 }
