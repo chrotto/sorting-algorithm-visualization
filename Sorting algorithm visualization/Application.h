@@ -1,7 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Visualizer.h"
-#include "SortingAlgorithms.h"
 
 class Application
 {
@@ -14,7 +13,7 @@ private:
 	int mRows;
 	const double mBorder;
 	double mWidth, mHeight;
-	vector<unique_ptr<Visualizer>> mVisualizers;
+	vector<Visualizer::Ptr> mVisualizers;
 	vector<int> mRandomNumbers;
 
 	static const sf::Time TimePerFrame;
@@ -29,4 +28,3 @@ private:
 	void registerVisualizers();
 	void initializeRandomNumbers();
 };
-

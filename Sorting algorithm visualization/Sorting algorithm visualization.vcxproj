@@ -124,15 +124,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="BubbleSort.cpp" />
+    <ClCompile Include="SelectionSort.cpp" />
+    <ClCompile Include="SortingAlgorithm.cpp" />
     <ClCompile Include="Visualizer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SortingAlgorithms.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="BubbleSort.h" />
+    <ClInclude Include="SelectionSort.h" />
+    <ClInclude Include="SortingAlgorithm.h" />
     <ClInclude Include="Visualizer.h" />
     <ClInclude Include="Signal.h" />
-    <ClInclude Include="SortingAlgorithms.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Signal.inl" />

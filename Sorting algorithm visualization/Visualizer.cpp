@@ -2,7 +2,7 @@
 
 const sf::Time Visualizer::TimePerFrame = sf::seconds(1.0f / 60.0f);
 
-Visualizer::Visualizer(SortingAlogrithms instance, void(SortingAlogrithms::*func)(), vector<int> randomNumbers, sf::RenderWindow& window) : mWindow(window), mAlgorithm(instance)
+Visualizer::Visualizer(SortingAlgorithm::Ptr instance, vector<int> randomNumbers, sf::RenderWindow& window) : mWindow(window), mAlgorithm(move(instance))
 {
 	mFirstComparison = false;
 
@@ -14,11 +14,10 @@ Visualizer::Visualizer(SortingAlogrithms instance, void(SortingAlogrithms::*func
 		mColumns.push_back(createColumn(columnWidth, columnHeight));
 	}
 
-	mAlgorithm.initialize(randomNumbers, 50);
-	mAlgorithm.mSwap.connect(this, &Visualizer::onSwap);
-	mAlgorithm.mComparison.connect(this, &Visualizer::onComparison);
+	mAlgorithm->mSwap.connect(this, &Visualizer::onSwap);
+	mAlgorithm->mComparison.connect(this, &Visualizer::onComparison);
 
-	mSortingThread = thread(func, mAlgorithm);
+	mSortingThread = thread(&SortingAlgorithm::runSort, std::move(mAlgorithm));
 }
 
 Visualizer::~Visualizer()

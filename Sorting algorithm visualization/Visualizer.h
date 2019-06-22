@@ -2,16 +2,18 @@
 #include <vector>
 #include <thread>
 #include <SFML/Graphics.hpp>
-#include "SortingAlgorithms.h"
+#include "SortingAlgorithm.h"
 using namespace std;
 
 class Visualizer : public sf::Drawable
 {
+public:
+	typedef unique_ptr<Visualizer> Ptr;
 private:
 	sf::RenderWindow& mWindow;
 
 	vector<sf::RectangleShape> mColumns;
-	SortingAlogrithms mAlgorithm;
+	SortingAlgorithm::Ptr mAlgorithm;
 	thread mSortingThread;
 
 	pair<int, int> mLastComparison;
@@ -20,7 +22,7 @@ private:
 	static const sf::Time TimePerFrame;
 
 public:
-	Visualizer(SortingAlogrithms instance, void(SortingAlogrithms::*func)(), vector<int> randomNumbers, sf::RenderWindow& window);
+	Visualizer(SortingAlgorithm::Ptr instance, vector<int> randomNumbers, sf::RenderWindow& window);
 	~Visualizer();
 
 private:
