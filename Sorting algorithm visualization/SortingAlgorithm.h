@@ -15,11 +15,14 @@ public:
 private:
 	vector<int> mSortArray;
 	int mDelay;
+	string mName;
 
 public:
-	SortingAlgorithm(vector<int> sortArray, int delay);
+	SortingAlgorithm(vector<int> sortArray, int delay, const string& name);
 
 	virtual void runSort() = 0;
+
+	const string& getName() const;
 
 protected:
 	void swap(int a, int b);

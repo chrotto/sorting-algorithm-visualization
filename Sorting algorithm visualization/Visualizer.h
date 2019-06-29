@@ -19,6 +19,9 @@ private:
 	pair<int, int> mLastComparison;
 	bool mFirstComparison;
 
+	sf::Font mFont;
+	sf::Text mAlgorithmName;
+
 	static const sf::Time TimePerFrame;
 
 public:

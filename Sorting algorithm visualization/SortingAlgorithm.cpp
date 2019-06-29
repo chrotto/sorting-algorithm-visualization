@@ -2,9 +2,14 @@
 #include <chrono>
 #include <thread>
 
-SortingAlgorithm::SortingAlgorithm(vector<int> sortArray, int delay) : mSortArray(sortArray), mDelay(delay)
+SortingAlgorithm::SortingAlgorithm(vector<int> sortArray, int delay, const string& name) : mSortArray(sortArray), mDelay(delay), mName(name)
 {
 	// Nothing to do
+}
+
+const string& SortingAlgorithm::getName() const
+{
+	return mName;
 }
 
 void SortingAlgorithm::swap(int a, int b)

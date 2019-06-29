@@ -1,6 +1,6 @@
 #include "SelectionSort.h"
 
-SelectionSort::SelectionSort(vector<int> sortArray, int delay) : SortingAlgorithm(sortArray, delay), mArraySize(sortArray.size())
+SelectionSort::SelectionSort(vector<int> sortArray, int delay) : SortingAlgorithm(sortArray, delay, "Selection Sort"), mArraySize(sortArray.size())
 {
 	// Nothing to do
 }
