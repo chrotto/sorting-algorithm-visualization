@@ -2,20 +2,27 @@
 
 const sf::Time Visualizer::TimePerFrame = sf::seconds(1.0f / 60.0f);
 
-Visualizer::Visualizer(SortingAlgorithm::Ptr instance, vector<int> randomNumbers, sf::RenderWindow& window) : mWindow(window), mAlgorithm(move(instance)), mFirstComparison(false)
+Visualizer::Visualizer(SortingAlgorithm::Ptr instance, vector<int> randomNumbers, sf::RenderWindow& window)
+	: mWindow(window),
+	  mBackground(window.getView().getSize()),
+	  mAlgorithm(move(instance)),
+	  mFirstComparison(false),
+	  mTitleHeight(30.0f)
 {
+	mBackground.setFillColor(sf::Color::Black);
+
 	mFont.loadFromFile("Sansation.ttf");
 	mAlgorithmName.setFont(mFont);
 	mAlgorithmName.setString(mAlgorithm->getName());
-	mAlgorithmName.setCharacterSize(50);
+	mAlgorithmName.setCharacterSize(20);
 	mAlgorithmName.setOrigin(mAlgorithmName.getLocalBounds().width / 2.0f, mAlgorithmName.getLocalBounds().height / 2.0f);
-	mAlgorithmName.setPosition(mWindow.getSize().x / 2.0f, mAlgorithmName.getLocalBounds().height / 2.0f);
+	mAlgorithmName.setPosition(mWindow.getView().getSize().x / 2.0f, mAlgorithmName.getLocalBounds().height / 2.0f);
 
 	float columnWidth = mWindow.getView().getSize().x / randomNumbers.size();
 
 	for (int randomNumber : randomNumbers)
 	{
-		float columnHeight = mWindow.getView().getSize().y / 9 * randomNumber;
+		float columnHeight = (mWindow.getView().getSize().y - mTitleHeight) / 9 * randomNumber;
 		mColumns.push_back(createColumn(columnWidth, columnHeight));
 	}
 
@@ -32,6 +39,7 @@ Visualizer::~Visualizer()
 
 void Visualizer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	target.draw(mBackground);
 	for (auto column : mColumns)
 		target.draw(column, states);
 

@@ -11,6 +11,7 @@ public:
 	typedef unique_ptr<Visualizer> Ptr;
 private:
 	sf::RenderWindow& mWindow;
+	sf::RectangleShape mBackground;
 
 	vector<sf::RectangleShape> mColumns;
 	SortingAlgorithm::Ptr mAlgorithm;
@@ -21,6 +22,7 @@ private:
 
 	sf::Font mFont;
 	sf::Text mAlgorithmName;
+	float mTitleHeight;
 
 	static const sf::Time TimePerFrame;
 

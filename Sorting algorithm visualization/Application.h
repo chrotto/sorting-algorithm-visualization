@@ -8,11 +8,12 @@ private:
 	sf::RenderWindow mWindow;
 
 	int mMax;
-	int mMaxColumns;
+	const int mMaxColumns;
 	int mColumns;
 	int mRows;
 	const double mBorder;
-	double mWidth, mHeight;
+	sf::Vector2f mViewportSize;
+	sf::Vector2f mViewSize;
 	vector<Visualizer::Ptr> mVisualizers;
 	vector<int> mRandomNumbers;
 

@@ -6,17 +6,22 @@
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.0f / 60.0f);
 
-Application::Application() : mWindow(sf::VideoMode(1920, 1080), "Sorting Algorithms Visualization"), mMax(20), mMaxColumns(5), mBorder(0.01)
+Application::Application() : mWindow(sf::VideoMode(1920, 1080), "Sorting Algorithms Visualization"), mMax(20), mMaxColumns(5), mBorder(10.0)
 {
+	mViewportSize.x = mViewportSize.y = (mWindow.getSize().x - (1.0 + mMaxColumns) * mBorder) / ((double)mMaxColumns * mWindow.getSize().x);
+	mViewSize.x = mWindow.getSize().x * mViewportSize.x;
+	mViewSize.y = mWindow.getSize().y * mViewportSize.y;
+
+	sf::View view = mWindow.getView();
+	view.setSize(mViewSize.x, mViewSize.y);
+	view.setCenter(mViewSize.x / 2, mViewSize.y / 2);
+	mWindow.setView(view);
+
 	initializeRandomNumbers();
 	registerVisualizers();
 
-	mColumns = ceil((double)mVisualizers.size() / 2);
-	mColumns = mColumns > mMaxColumns ? mMaxColumns : mColumns;
+	mColumns = min((int)mVisualizers.size(), mMaxColumns);
 	mRows = ceil((double)mVisualizers.size() / mColumns);
-
-	mWidth = 1.0f / mColumns - 2 * mBorder;
-	mHeight = 1.0f / mRows - 2 * mBorder;
 }
 
 void Application::run()
@@ -43,7 +48,7 @@ void Application::run()
 
 void Application::render()
 {
-	mWindow.clear();
+	mWindow.clear(sf::Color(100, 100, 100));
 	int row = 0;
 	int column = 0;
 	sf::View view = mWindow.getView();
@@ -54,11 +59,13 @@ void Application::render()
 			column = 0;
 			++row;
 		}
-		double left = (mWidth * column + mBorder * column * 2) + mBorder;
-		double top = (mHeight * row + mBorder * row * 2) + mBorder;
+		double columnBorder = (mBorder / mWindow.getSize().x) * (column + 1.0);
+		double rowBorder = (mBorder / mWindow.getSize().y) * (row + 1.0);
+		float left = mViewportSize.x * column + columnBorder;
+		float top = mViewportSize.y * row + rowBorder;
 		++column;
 
-		view.setViewport(sf::FloatRect(left, top, mWidth, mHeight));
+		view.setViewport(sf::FloatRect(left, top, mViewportSize.x, mViewportSize.y));
 		mWindow.setView(view);
 		mWindow.draw(*visualizer);
 	}
