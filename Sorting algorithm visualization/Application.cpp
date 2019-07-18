@@ -9,12 +9,13 @@ const sf::Time Application::TimePerFrame = sf::seconds(1.0f / 60.0f);
 Application::Application() : mWindow(sf::VideoMode(1920, 1080), "Sorting Algorithms Visualization"), mMax(20), mMaxColumns(5), mBorder(10.0)
 {
 	mViewportSize.x = mViewportSize.y = (mWindow.getSize().x - (1.0 + mMaxColumns) * mBorder) / ((double)mMaxColumns * mWindow.getSize().x);
+	mViewportSize.y = (mWindow.getSize().y - (1.0 + mMaxColumns) * mBorder) / ((double)mMaxColumns * mWindow.getSize().y);
 	mViewSize.x = mWindow.getSize().x * mViewportSize.x;
 	mViewSize.y = mWindow.getSize().y * mViewportSize.y;
 
 	sf::View view = mWindow.getView();
-	view.setSize(mViewSize.x, mViewSize.y);
-	view.setCenter(mViewSize.x / 2, mViewSize.y / 2);
+	view.setSize(mViewSize);
+	view.setCenter(mViewSize / 2.0f);
 	mWindow.setView(view);
 
 	initializeRandomNumbers();
