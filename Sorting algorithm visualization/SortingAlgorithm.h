@@ -12,9 +12,13 @@ public:
 
 	Signal<int, int> mSwap;
 	Signal<int, int> mComparison;
+	Signal<int, int> mValueUpdate;
+	Signal<int, int> mMarkGroup;
+
+protected:
+	vector<int> mSortArray;
 
 private:
-	vector<int> mSortArray;
 	int mDelay;
 	string mName;
 
@@ -28,4 +32,6 @@ public:
 protected:
 	void swap(int a, int b);
 	bool compare(int a, int b, bool(*compare)(int, int));
+	void updateValue(int index, int value);
+	void markGroup(int start, int end);
 };

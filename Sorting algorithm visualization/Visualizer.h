@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <list>
 #include <thread>
 #include <SFML/Graphics.hpp>
 #include "SortingAlgorithm.h"
@@ -20,6 +21,8 @@ private:
 	pair<int, int> mLastComparison;
 	bool mFirstComparison;
 
+	list<pair<int, int>> mGroups;
+
 	sf::Font mFont;
 	sf::Text mAlgorithmName;
 	float mTitleHeight;
@@ -34,6 +37,8 @@ private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void onSwap(int a, int b);
 	void onComparison(int a, int b);
+	void onValueUpdate(int index, int value);
+	void onGroupMark(int start, int end);
 
-	sf::RectangleShape createColumn(float width, float height);
+	sf::RectangleShape createColumn(float width, float height, int columnPosition);
 };

@@ -4,6 +4,7 @@
 #include "BubbleSort.h"
 #include "SelectionSort.h"
 #include "InsertionSort.h"
+#include "MergeSort.h"
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.0f / 60.0f);
 
@@ -79,6 +80,7 @@ void Application::registerVisualizers()
 	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new BubbleSort(mRandomNumbers, 50)), mRandomNumbers, mWindow)));
 	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new SelectionSort(mRandomNumbers, 50)), mRandomNumbers, mWindow)));
 	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new InsertionSort(mRandomNumbers, 50)), mRandomNumbers, mWindow)));
+	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new MergeSort(mRandomNumbers, 50)), mRandomNumbers, mWindow)));
 }
 
 void Application::initializeRandomNumbers()

@@ -126,6 +126,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="BubbleSort.cpp" />
     <ClCompile Include="InsertionSort.cpp" />
+    <ClCompile Include="MergeSort.cpp" />
     <ClCompile Include="SelectionSort.cpp" />
     <ClCompile Include="SortingAlgorithm.cpp" />
     <ClCompile Include="Visualizer.cpp" />
@@ -135,6 +136,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="BubbleSort.h" />
     <ClInclude Include="InsertionSort.h" />
+    <ClInclude Include="MergeSort.h" />
     <ClInclude Include="SelectionSort.h" />
     <ClInclude Include="SortingAlgorithm.h" />
     <ClInclude Include="Visualizer.h" />

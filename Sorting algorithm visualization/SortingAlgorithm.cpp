@@ -25,3 +25,15 @@ bool SortingAlgorithm::compare(int a, int b, bool(*compare)(int, int))
 	this_thread::sleep_for(chrono::milliseconds(mDelay));
 	return compare(mSortArray[a], mSortArray[b]);
 }
+
+void SortingAlgorithm::updateValue(int index, int value)
+{
+	mValueUpdate.emit(index, value);
+	this_thread::sleep_for(chrono::milliseconds(mDelay));
+	mSortArray[index] = value;
+}
+
+void SortingAlgorithm::markGroup(int start, int end)
+{
+	mMarkGroup.emit(start, end);
+}
