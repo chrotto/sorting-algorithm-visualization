@@ -11,7 +11,7 @@ Visualizer::Visualizer(SortingAlgorithm::Ptr instance, vector<int> randomNumbers
 {
 	mBackground.setFillColor(sf::Color::Black);
 
-	mFont.loadFromFile("Sansation.ttf");
+	mFont.loadFromFile("assets/Sansation.ttf");
 	mAlgorithmName.setFont(mFont);
 	mAlgorithmName.setString(mAlgorithm->getName());
 	mAlgorithmName.setCharacterSize(20);

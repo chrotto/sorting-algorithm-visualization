@@ -69,7 +69,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
+    <SourcePath>$(ProjectDir)\src;$(SourcePath)</SourcePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(ProjectDir)\include;$(IncludePath)</IncludePath>
+    <SourcePath>$(ProjectDir)\src;$(SourcePath)</SourcePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -123,27 +130,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="BubbleSort.cpp" />
-    <ClCompile Include="InsertionSort.cpp" />
-    <ClCompile Include="MergeSort.cpp" />
-    <ClCompile Include="SelectionSort.cpp" />
-    <ClCompile Include="SortingAlgorithm.cpp" />
-    <ClCompile Include="Visualizer.cpp" />
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\BubbleSort.cpp" />
+    <ClCompile Include="src\InsertionSort.cpp" />
+    <ClCompile Include="src\MergeSort.cpp" />
+    <ClCompile Include="src\SelectionSort.cpp" />
+    <ClCompile Include="src\SortingAlgorithm.cpp" />
+    <ClCompile Include="src\Visualizer.cpp" />
+    <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="BubbleSort.h" />
-    <ClInclude Include="InsertionSort.h" />
-    <ClInclude Include="MergeSort.h" />
-    <ClInclude Include="SelectionSort.h" />
-    <ClInclude Include="SortingAlgorithm.h" />
-    <ClInclude Include="Visualizer.h" />
-    <ClInclude Include="Signal.h" />
+    <ClInclude Include="include\Application.h" />
+    <ClInclude Include="include\BubbleSort.h" />
+    <ClInclude Include="include\InsertionSort.h" />
+    <ClInclude Include="include\MergeSort.h" />
+    <ClInclude Include="include\SelectionSort.h" />
+    <ClInclude Include="include\SortingAlgorithm.h" />
+    <ClInclude Include="include\Visualizer.h" />
+    <ClInclude Include="include\Signal.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Signal.inl" />
+    <None Include="src\Signal.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
