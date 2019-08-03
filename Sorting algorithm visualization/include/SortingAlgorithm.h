@@ -14,6 +14,7 @@ public:
 	Signal<int, int> mComparison;
 	Signal<int, int> mValueUpdate;
 	Signal<int, int> mMarkGroup;
+	Signal<int> mPivotUpdate;
 
 protected:
 	vector<int> mSortArray;
@@ -34,4 +35,5 @@ protected:
 	bool compare(int a, int b, bool(*compare)(int, int));
 	void updateValue(int index, int value);
 	void markGroup(int start, int end);
+	void updatePivot(int index);
 };

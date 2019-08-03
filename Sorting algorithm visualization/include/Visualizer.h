@@ -20,6 +20,7 @@ private:
 
 	pair<int, int> mLastComparison;
 	bool mFirstComparison;
+	int mLastPivotIndex;
 
 	list<pair<int, int>> mGroups;
 
@@ -39,6 +40,7 @@ private:
 	void onComparison(int a, int b);
 	void onValueUpdate(int index, int value);
 	void onGroupMark(int start, int end);
+	void onPivotUpdate(int index);
 
 	sf::RectangleShape createColumn(float width, float height, int columnPosition);
 };

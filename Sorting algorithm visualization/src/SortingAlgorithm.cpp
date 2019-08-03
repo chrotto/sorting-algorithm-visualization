@@ -37,3 +37,8 @@ void SortingAlgorithm::markGroup(int start, int end)
 {
 	mMarkGroup.emit(start, end);
 }
+
+void SortingAlgorithm::updatePivot(int index)
+{
+	mPivotUpdate.emit(index);
+}

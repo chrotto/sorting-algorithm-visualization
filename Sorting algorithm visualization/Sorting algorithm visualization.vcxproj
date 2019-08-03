@@ -130,6 +130,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\QuickSort.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\BubbleSort.cpp" />
     <ClCompile Include="src\InsertionSort.cpp" />
@@ -148,6 +149,7 @@
     <ClInclude Include="include\SortingAlgorithm.h" />
     <ClInclude Include="include\Visualizer.h" />
     <ClInclude Include="include\Signal.h" />
+    <ClInclude Include="include\QuickSort.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\Signal.inl" />

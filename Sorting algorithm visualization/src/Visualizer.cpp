@@ -7,6 +7,7 @@ Visualizer::Visualizer(SortingAlgorithm::Ptr instance, vector<int> randomNumbers
 	mBackground(window.getView().getSize()),
 	mAlgorithm(move(instance)),
 	mFirstComparison(false),
+	mLastPivotIndex(-1),
 	mTitleHeight(30.0f)
 {
 	mBackground.setFillColor(sf::Color::Black);
@@ -30,6 +31,7 @@ Visualizer::Visualizer(SortingAlgorithm::Ptr instance, vector<int> randomNumbers
 	mAlgorithm->mComparison.connect(this, &Visualizer::onComparison);
 	mAlgorithm->mValueUpdate.connect(this, &Visualizer::onValueUpdate);
 	mAlgorithm->mMarkGroup.connect(this, &Visualizer::onGroupMark);
+	mAlgorithm->mPivotUpdate.connect(this, &Visualizer::onPivotUpdate);
 
 	mSortingThread = thread(&SortingAlgorithm::runSort, std::move(mAlgorithm));
 }
@@ -63,6 +65,7 @@ void Visualizer::onSwap(int a, int b)
 
 	mLastComparison.first = mLastComparison.first == a ? b : mLastComparison.first == b ? a : mLastComparison.first;
 	mLastComparison.second = mLastComparison.second == b ? a : mLastComparison.second == a ? b : mLastComparison.second;
+	mLastPivotIndex = mLastPivotIndex == a ? b : mLastPivotIndex == b ? a : mLastPivotIndex;
 }
 
 void Visualizer::onComparison(int a, int b)
@@ -78,6 +81,8 @@ void Visualizer::onComparison(int a, int b)
 	}
 	mColumns[a].setFillColor(sf::Color(120, 100, 20));
 	mColumns[b].setFillColor(sf::Color(120, 100, 20));
+	if (mLastPivotIndex >= 0)
+		mColumns[mLastPivotIndex].setFillColor(sf::Color(180, 80, 120));
 	mLastComparison.first = a;
 	mLastComparison.second = b;
 }
@@ -98,6 +103,14 @@ void Visualizer::onGroupMark(int start, int end)
 
 	for (int i = start; i <= end; i++)
 		mColumns[i].setFillColor(mGroupColor);
+}
+
+void Visualizer::onPivotUpdate(int index)
+{
+	if(mLastPivotIndex >= 0)
+		mColumns[mLastPivotIndex].setFillColor(sf::Color(150, 50, 50));
+	mColumns[index].setFillColor(sf::Color(180, 80, 120));
+	mLastPivotIndex = index;
 }
 
 sf::RectangleShape Visualizer::createColumn(float width, float height, int columnPosition)
