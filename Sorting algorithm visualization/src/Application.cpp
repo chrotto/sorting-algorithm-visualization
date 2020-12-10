@@ -10,23 +10,21 @@
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.0f / 60.0f);
 
-Application::Application() : mWindow(sf::VideoMode(1920, 1080), "Sorting Algorithms Visualization"), mMax(20), mMaxColumns(5), mBorder(10.0)
+Application::Application()
+	: mWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Sorting Algorithms Visualization"),
+	mArraySize(10),
+	mRandomNumbers(mArraySize)
 {
-	mViewportSize.x = mViewportSize.y = (mWindow.getSize().x - (1.0 + mMaxColumns) * mBorder) / ((double)mMaxColumns * mWindow.getSize().x);
-	mViewportSize.y = (mWindow.getSize().y - (1.0 + mMaxColumns) * mBorder) / ((double)mMaxColumns * mWindow.getSize().y);
-	mViewSize.x = mWindow.getSize().x * mViewportSize.x;
-	mViewSize.y = mWindow.getSize().y * mViewportSize.y;
-
-	sf::View view = mWindow.getView();
-	view.setSize(mViewSize);
-	view.setCenter(mViewSize / 2.0f);
-	mWindow.setView(view);
-
 	initializeRandomNumbers();
 	registerVisualizers();
 
-	mColumns = min((int)mVisualizers.size(), mMaxColumns);
-	mRows = ceil((double)mVisualizers.size() / mColumns);
+	float screenWidth = static_cast<float>(mWindow.getSize().x);
+
+	mGrid.columns = 4;
+	mGrid.rows = 3;
+	mGrid.border = 8.0f;
+	mGrid.columnSize = (screenWidth - mGrid.border * (mGrid.columns + 1)) / (4 * screenWidth);
+	mGrid.rowSize = mGrid.columnSize;
 }
 
 void Application::run()
@@ -54,26 +52,21 @@ void Application::run()
 void Application::render()
 {
 	mWindow.clear(sf::Color(100, 100, 100));
-	int row = 0;
-	int column = 0;
 	sf::View view = mWindow.getView();
-	for (auto& visualizer : mVisualizers)
-	{
-		if (column >= mColumns)
-		{
-			column = 0;
-			++row;
-		}
-		double columnBorder = (mBorder / mWindow.getSize().x) * (column + 1.0);
-		double rowBorder = (mBorder / mWindow.getSize().y) * (row + 1.0);
-		float left = mViewportSize.x * column + columnBorder;
-		float top = mViewportSize.y * row + rowBorder;
-		++column;
 
-		view.setViewport(sf::FloatRect(left, top, mViewportSize.x, mViewportSize.y));
+	float borderRatioX = mGrid.border / static_cast<float>(mWindow.getSize().x);
+	float borderRatioY = mGrid.border / static_cast<float>(mWindow.getSize().y);
+	float left = 0.0f, top = 0.0f;
+
+	for (int i = 0; i < mVisualizers.size(); i++)
+	{
+		left = borderRatioX * (i % mGrid.columns + 1) + mGrid.columnSize * (i % mGrid.columns);
+		top = borderRatioY * (i / mGrid.columns + 1) + mGrid.rowSize * (i / mGrid.columns);
+		view.setViewport(sf::FloatRect(left, top, mGrid.columnSize, mGrid.rowSize));
 		mWindow.setView(view);
-		mWindow.draw(*visualizer);
+		mWindow.draw(*mVisualizers[i]);
 	}
+
 	mWindow.display();
 }
 
@@ -90,6 +83,6 @@ void Application::registerVisualizers()
 void Application::initializeRandomNumbers()
 {
 	srand(time(nullptr));
-	for (int i = 0; i < mMax; i++)
-		mRandomNumbers.push_back(rand() % 9 + 1);
+	for (int& num : mRandomNumbers)
+		num = rand() % 10 + 1;
 }
