@@ -1,6 +1,6 @@
 #include "BubbleSort.h"
 
-BubbleSort::BubbleSort(vector<int> sortArray, int delay) : SortingAlgorithm(sortArray, delay, "Bubble Sort"), mArraySize(sortArray.size())
+BubbleSort::BubbleSort(vector<int> sortArray, int delay) : SortingAlgorithm(sortArray, delay, "Bubble Sort")
 {
 	// Nothing to do
 }
@@ -8,7 +8,7 @@ BubbleSort::BubbleSort(vector<int> sortArray, int delay) : SortingAlgorithm(sort
 void BubbleSort::runSort()
 {
 	bool sorted = false;
-	int end = mArraySize;
+	int end = mSortArray.size();
 
 	while (!sorted)
 	{

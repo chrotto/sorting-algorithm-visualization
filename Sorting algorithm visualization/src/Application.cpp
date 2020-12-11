@@ -72,12 +72,14 @@ void Application::render()
 
 void Application::registerVisualizers()
 {
-	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new BubbleSort(mRandomNumbers, 50)), mRandomNumbers, mWindow)));
-	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new SelectionSort(mRandomNumbers, 50)), mRandomNumbers, mWindow)));
-	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new InsertionSort(mRandomNumbers, 50)), mRandomNumbers, mWindow)));
-	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new MergeSort(mRandomNumbers, 50)), mRandomNumbers, mWindow)));
-	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new QuickSort(mRandomNumbers, 50)), mRandomNumbers, mWindow)));
-	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new GnomeSort(mRandomNumbers, 50)), mRandomNumbers, mWindow)));
+	const sf::Vector2f viewSize = mWindow.getView().getSize();
+	const int delay = 50;
+	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new BubbleSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));
+	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new SelectionSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));
+	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new InsertionSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));
+	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new MergeSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));
+	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new QuickSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));
+	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new GnomeSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));
 }
 
 void Application::initializeRandomNumbers()

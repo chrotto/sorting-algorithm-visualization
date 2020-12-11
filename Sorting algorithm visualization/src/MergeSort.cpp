@@ -23,8 +23,6 @@ void MergeSort::mergeSort(int lo, int hi)
 
 void MergeSort::merge(int lo, int mid, int hi)
 {
-	markGroup(lo, mid);
-	markGroup(mid + 1, hi);
 	int j = lo;
 	vector<int> leftPartArray;
 	while (j <= mid)
@@ -41,5 +39,4 @@ void MergeSort::merge(int lo, int mid, int hi)
 
 	while (k < j)
 		SortingAlgorithm::updateValue(k++, leftPartArray[i++]);
-	markGroup(lo, hi);
 }

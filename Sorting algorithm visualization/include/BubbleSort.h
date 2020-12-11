@@ -3,9 +3,6 @@
 
 class BubbleSort : public SortingAlgorithm
 {
-private:
-	int mArraySize;
-
 public:
 	BubbleSort(vector<int> sortArray, int delay);
 

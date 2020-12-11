@@ -36,13 +36,13 @@
     <ClCompile Include="src\SortingAlgorithm.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="src\Visualizer.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="src\QuickSort.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
     <ClCompile Include="src\GnomeSort.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Visualizer.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

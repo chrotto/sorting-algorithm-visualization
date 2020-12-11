@@ -1,39 +1,40 @@
 #include "Visualizer.h"
 
-const sf::Time Visualizer::TimePerFrame = sf::seconds(1.0f / 60.0f);
+const sf::Color Visualizer::COLUMN_IDLE_COLOR = sf::Color(150, 50, 50);
+const sf::Color Visualizer::COMPARE_COLOR = sf::Color(120, 100, 20);
+const sf::Color Visualizer::PIVOT_COLOR = sf::Color(250, 35, 225);
 
-Visualizer::Visualizer(SortingAlgorithm::Ptr instance, vector<int> randomNumbers, sf::RenderWindow& window)
-	: mWindow(window),
-	mBackground(window.getView().getSize()),
+Visualizer::Visualizer(SortingAlgorithm::Ptr instance, vector<int> randomNumbers, const sf::Vector2f viewSize)
+	: mViewSize(viewSize),
+	mBackground(viewSize),
 	mAlgorithm(move(instance)),
-	mFirstComparison(false),
-	mLastPivotIndex(-1),
-	mTitleHeight(30.0f)
+	mLastComparison(nullptr, nullptr),
+	mPivotColumn(nullptr)
 {
 	mBackground.setFillColor(sf::Color::Black);
 
-	mFont.loadFromFile("assets/Sansation.ttf");
+	mFont.loadFromFile("assets/OpenSans-SemiBold.ttf");
 	mAlgorithmName.setFont(mFont);
 	mAlgorithmName.setString(mAlgorithm->getName());
-	mAlgorithmName.setCharacterSize(20);
-	mAlgorithmName.setOrigin(mAlgorithmName.getLocalBounds().width / 2.0f, mAlgorithmName.getLocalBounds().height / 2.0f);
-	mAlgorithmName.setPosition(mWindow.getView().getSize().x / 2.0f, mAlgorithmName.getLocalBounds().height / 2.0f);
+	mAlgorithmName.setCharacterSize(mViewSize.y / 15);
+	const sf::FloatRect textBounds = mAlgorithmName.getLocalBounds();
+	mAlgorithmName.setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
+	mAlgorithmName.setPosition(mViewSize.x / 2.0f, (mAlgorithmName.getCharacterSize() + textBounds.top) / 2.0f);
 
-	float columnWidth = mWindow.getView().getSize().x / randomNumbers.size();
+	float columnWidth = mViewSize.x / randomNumbers.size();
 
 	for (int randomNumber : randomNumbers)
 	{
-		float columnHeight = (mWindow.getView().getSize().y - mTitleHeight) / 9 * randomNumber;
-		mColumns.push_back(createColumn(columnWidth, columnHeight, mColumns.size()));
+		float columnHeight = (mViewSize.y - mAlgorithmName.getCharacterSize()) / 10 * randomNumber;
+		mColumns.push_back(unique_ptr<sf::RectangleShape>(createColumn(columnWidth, columnHeight, mColumns.size())));
 	}
 
 	mAlgorithm->mSwap.connect(this, &Visualizer::onSwap);
 	mAlgorithm->mComparison.connect(this, &Visualizer::onComparison);
 	mAlgorithm->mValueUpdate.connect(this, &Visualizer::onValueUpdate);
-	mAlgorithm->mMarkGroup.connect(this, &Visualizer::onGroupMark);
 	mAlgorithm->mPivotUpdate.connect(this, &Visualizer::onPivotUpdate);
 
-	mSortingThread = thread(&SortingAlgorithm::runSort, std::move(mAlgorithm));
+	mSortingThread = thread(&SortingAlgorithm::runSort, move(mAlgorithm));
 }
 
 Visualizer::~Visualizer()
@@ -44,82 +45,64 @@ Visualizer::~Visualizer()
 void Visualizer::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(mBackground);
-	for (auto column : mColumns)
-		target.draw(column, states);
-
-	target.draw(mAlgorithmName, states);
+	for (auto& column : mColumns)
+		target.draw(*column, states);
+	target.draw(mAlgorithmName);
 }
 
 void Visualizer::onSwap(int a, int b)
 {
-	sf::RectangleShape& aRect = mColumns[a];
-	sf::RectangleShape& bRect = mColumns[b];
+	sf::RectangleShape& colA = *mColumns[a];
+	sf::RectangleShape& colB = *mColumns[b];
 
-	sf::Vector2f aPosition = aRect.getPosition();
-	sf::Vector2f bPosition = bRect.getPosition();
+	sf::Vector2f aPosition = colA.getPosition();
+	sf::Vector2f bPosition = colB.getPosition();
 
-	aRect.setPosition(bPosition.x, aPosition.y);
-	bRect.setPosition(aPosition.x, bPosition.y);
+	colA.setPosition(bPosition.x, aPosition.y);
+	colB.setPosition(aPosition.x, bPosition.y);
 
 	std::swap(mColumns[a], mColumns[b]);
-
-	mLastComparison.first = mLastComparison.first == a ? b : mLastComparison.first == b ? a : mLastComparison.first;
-	mLastComparison.second = mLastComparison.second == b ? a : mLastComparison.second == a ? b : mLastComparison.second;
-	mLastPivotIndex = mLastPivotIndex == a ? b : mLastPivotIndex == b ? a : mLastPivotIndex;
 }
 
 void Visualizer::onComparison(int a, int b)
 {
-	if (!mFirstComparison)
+	if (mLastComparison.first != nullptr)
 	{
-		mColumns[mLastComparison.first].setFillColor(sf::Color(150, 50, 50));
-		mColumns[mLastComparison.second].setFillColor(sf::Color(150, 50, 50));
+		mLastComparison.first->setFillColor(COLUMN_IDLE_COLOR);
+		mLastComparison.second->setFillColor(COLUMN_IDLE_COLOR);
 	}
-	else
-	{
-		mFirstComparison = false;
-	}
-	mColumns[a].setFillColor(sf::Color(120, 100, 20));
-	mColumns[b].setFillColor(sf::Color(120, 100, 20));
-	if (mLastPivotIndex >= 0)
-		mColumns[mLastPivotIndex].setFillColor(sf::Color(180, 80, 120));
-	mLastComparison.first = a;
-	mLastComparison.second = b;
+	mLastComparison.first = &*mColumns[a];
+	mLastComparison.second = &*mColumns[b];
+	mColumns[a]->setFillColor(COMPARE_COLOR);
+	mColumns[b]->setFillColor(COMPARE_COLOR);
+
+	if (mPivotColumn)
+		mPivotColumn->setFillColor(PIVOT_COLOR);
 }
 
 void Visualizer::onValueUpdate(int index, int value)
 {
-	mColumns[index] = createColumn(mColumns[index].getSize().x, (mWindow.getView().getSize().y - mTitleHeight) / 9 * value, index);
-	for (auto group : mGroups)
-		if (group.first <= index && index <= group.second)
-			mColumns[index].setFillColor(sf::Color(100 + group.first * 20, 150 + group.first, 100 + group.first * 20));
-}
-
-void Visualizer::onGroupMark(int start, int end)
-{
-	sf::Color mGroupColor = sf::Color(100 + start * 20, 150 + start, 100 + start * 20);
-	mGroups.remove_if([start, end](const pair<int, int> group) { return group.first == start || group.second == end; });
-	mGroups.push_back(pair<int, int>(start, end));
-
-	for (int i = start; i <= end; i++)
-		mColumns[i].setFillColor(mGroupColor);
+	sf::RectangleShape& column = *mColumns[index];
+	const float height = (mViewSize.y - mAlgorithmName.getCharacterSize()) / 10 * value;
+	column.setSize({ column.getSize().x, height });
+	column.setPosition(column.getPosition().x, mViewSize.y - height);
 }
 
 void Visualizer::onPivotUpdate(int index)
 {
-	if(mLastPivotIndex >= 0)
-		mColumns[mLastPivotIndex].setFillColor(sf::Color(150, 50, 50));
-	mColumns[index].setFillColor(sf::Color(180, 80, 120));
-	mLastPivotIndex = index;
+	if (mPivotColumn)
+		mPivotColumn->setFillColor(COLUMN_IDLE_COLOR);
+	mPivotColumn = &*mColumns[index];
+	mPivotColumn->setFillColor(PIVOT_COLOR);
 }
 
-sf::RectangleShape Visualizer::createColumn(float width, float height, int columnPosition)
+sf::RectangleShape* Visualizer::createColumn(float width, float height, int index)
 {
-	sf::RectangleShape column(sf::Vector2f(width, height));
-	column.setPosition(width * columnPosition, mWindow.getView().getSize().y - height);
-	column.setFillColor(sf::Color(150, 50, 50));
-	column.setOutlineColor(sf::Color(0, 0, 0));
-	column.setOutlineThickness(2.0f);
+	sf::RectangleShape* column = new sf::RectangleShape({ width, height });
+	column->setPosition(width * index, mViewSize.y - height);
+	column->setFillColor(COLUMN_IDLE_COLOR);
+	column->setOutlineColor(sf::Color(0, 0, 0));
+	column->setOutlineThickness(-8.0f);
 
 	return column;
 }
