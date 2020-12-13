@@ -19,7 +19,7 @@ void SortingAlgorithm::swap(int a, int b)
 	std::swap(mSortArray[a], mSortArray[b]);
 }
 
-bool SortingAlgorithm::compare(int a, int b, bool(*compare)(int, int))
+bool SortingAlgorithm::compare(int a, int b, function<bool(int, int)> compare)
 {
 	mComparison.emit(a, b);
 	this_thread::sleep_for(chrono::milliseconds(mDelay));
@@ -36,4 +36,13 @@ void SortingAlgorithm::updateValue(int index, int value)
 void SortingAlgorithm::updatePivot(int index)
 {
 	mPivotUpdate.emit(index);
+}
+
+void SortingAlgorithm::markAsSorted()
+{
+	for (int i = 0; i < mSortArray.size(); i++)
+	{
+		mSorted.emit(i);
+		this_thread::sleep_for(chrono::milliseconds(20));
+	}
 }

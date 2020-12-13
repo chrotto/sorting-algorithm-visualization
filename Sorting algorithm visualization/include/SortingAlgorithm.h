@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <memory>
+#include <functional>
 #include <string>
 #include "Signal.h"
 using namespace std;
@@ -14,6 +15,7 @@ public:
 	Signal<int, int> mComparison;
 	Signal<int, int> mValueUpdate;
 	Signal<int> mPivotUpdate;
+	Signal<int> mSorted;
 
 protected:
 	vector<int> mSortArray;
@@ -31,7 +33,8 @@ public:
 
 protected:
 	void swap(int a, int b);
-	bool compare(int a, int b, bool(*compare)(int, int));
+	bool compare(int a, int b, function<bool(int, int)> compare);
 	void updateValue(int index, int value);
 	void updatePivot(int index);
+	void markAsSorted();
 };

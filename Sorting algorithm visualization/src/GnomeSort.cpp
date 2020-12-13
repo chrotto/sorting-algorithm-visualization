@@ -22,4 +22,5 @@ void GnomeSort::runSort()
 			i--;
 		}
 	}
+	markAsSorted();
 }

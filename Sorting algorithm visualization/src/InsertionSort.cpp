@@ -17,4 +17,5 @@ void InsertionSort::runSort()
 				break;
 		}
 	}
+	markAsSorted();
 }

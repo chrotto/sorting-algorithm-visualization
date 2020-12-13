@@ -23,4 +23,5 @@ void BubbleSort::runSort()
 			}
 		}
 	}
+	markAsSorted();
 }

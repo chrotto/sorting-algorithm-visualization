@@ -2,6 +2,7 @@
 
 const sf::Color Visualizer::COLUMN_IDLE_COLOR = sf::Color(150, 50, 50);
 const sf::Color Visualizer::COMPARE_COLOR = sf::Color(120, 100, 20);
+const sf::Color Visualizer::SORTED_COLOR = sf::Color(0, 255, 0);
 const sf::Color Visualizer::PIVOT_COLOR = sf::Color(250, 35, 225);
 
 Visualizer::Visualizer(SortingAlgorithm::Ptr instance, vector<int> randomNumbers, const sf::Vector2f viewSize)
@@ -31,6 +32,7 @@ Visualizer::Visualizer(SortingAlgorithm::Ptr instance, vector<int> randomNumbers
 
 	mAlgorithm->mSwap.connect(this, &Visualizer::onSwap);
 	mAlgorithm->mComparison.connect(this, &Visualizer::onComparison);
+	mAlgorithm->mSorted.connect(this, &Visualizer::onSorted);
 	mAlgorithm->mValueUpdate.connect(this, &Visualizer::onValueUpdate);
 	mAlgorithm->mPivotUpdate.connect(this, &Visualizer::onPivotUpdate);
 
@@ -78,6 +80,11 @@ void Visualizer::onComparison(int a, int b)
 
 	if (mPivotColumn)
 		mPivotColumn->setFillColor(PIVOT_COLOR);
+}
+
+void Visualizer::onSorted(int index)
+{
+	mColumns[index]->setFillColor(SORTED_COLOR);
 }
 
 void Visualizer::onValueUpdate(int index, int value)

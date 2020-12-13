@@ -8,6 +8,7 @@ QuickSort::QuickSort(vector<int> sortArray, int delay) : SortingAlgorithm(sortAr
 void QuickSort::runSort()
 {
 	quickSort(0, mSortArray.size() - 1);
+	markAsSorted();
 }
 
 void QuickSort::quickSort(int lo, int hi)

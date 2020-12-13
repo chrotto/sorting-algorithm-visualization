@@ -8,6 +8,7 @@ MergeSort::MergeSort(vector<int> sortArray, int delay) : SortingAlgorithm(sortAr
 void MergeSort::runSort()
 {
 	mergeSort(0, mSortArray.size() - 1);
+	markAsSorted();
 }
 
 void MergeSort::mergeSort(int lo, int hi)
@@ -31,7 +32,7 @@ void MergeSort::merge(int lo, int mid, int hi)
 	int i = 0, k = lo;
 	while (k < j && j <= hi)
 	{
-		if (leftPartArray[i] <= mSortArray[j])
+		if (compare(k, j, [&a = leftPartArray[i], &b = mSortArray[j]](int, int) {return a <= b; }))
 			SortingAlgorithm::updateValue(k++, leftPartArray[i++]);
 		else
 			SortingAlgorithm::updateValue(k++, mSortArray[j++]);

@@ -73,7 +73,7 @@ void Application::render()
 void Application::registerVisualizers()
 {
 	const sf::Vector2f viewSize = mWindow.getView().getSize();
-	const int delay = 50;
+	const int delay = 10;
 	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new BubbleSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));
 	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new SelectionSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));
 	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new InsertionSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));

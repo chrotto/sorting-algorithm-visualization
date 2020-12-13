@@ -19,4 +19,5 @@ void SelectionSort::runSort()
 		if (min != i)
 			SortingAlgorithm::swap(min, i);
 	}
+	markAsSorted();
 }
