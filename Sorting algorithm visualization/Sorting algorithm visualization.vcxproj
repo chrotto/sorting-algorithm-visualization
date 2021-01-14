@@ -91,11 +91,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Programme\SFML-2.5.1\include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Development\SFML-2.5.1\include;$(ProjectDir)include;$(ProjectDir)libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>D:\Programme\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib;sfml-network-d.lib;sfml-audio-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Development\SFML-2.5.1\lib;$(ProjectDir)libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system-d.lib;sfml-window-d.lib;sfml-graphics-d.lib;sfml-network-d.lib;sfml-audio-d.lib;%(AdditionalDependencies);opengl32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -120,16 +120,21 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\Programme\SFML-2.5.1\include;$(ProjectDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Development\SFML-2.5.1\include;$(ProjectDir)include;$(ProjectDir)libraries;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>D:\Programme\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-system.lib;sfml-window.lib;sfml-graphics.lib;sfml-network.lib;sfml-audio.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Development\SFML-2.5.1\lib;$(ProjectDir)libraries;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-system.lib;sfml-window.lib;sfml-graphics.lib;sfml-network.lib;sfml-audio.lib;%(AdditionalDependencies);opengl32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="libraries\ImGui-SFML\imgui-SFML.cpp" />
+    <ClCompile Include="libraries\ImGui\imgui.cpp" />
+    <ClCompile Include="libraries\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="libraries\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="libraries\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="src\GnomeSort.cpp" />
     <ClCompile Include="src\QuickSort.cpp" />
     <ClCompile Include="src\Application.cpp" />
@@ -152,9 +157,21 @@
     <ClInclude Include="include\Visualizer.h" />
     <ClInclude Include="include\Signal.h" />
     <ClInclude Include="include\QuickSort.h" />
+    <ClInclude Include="libraries\ImGui-SFML\imgui-SFML.h" />
+    <ClInclude Include="libraries\ImGui-SFML\imgui-SFML_export.h" />
+    <ClInclude Include="libraries\ImGui\imconfig.h" />
+    <ClInclude Include="libraries\ImGui\imgui.h" />
+    <ClInclude Include="libraries\ImGui\imgui_internal.h" />
+    <ClInclude Include="libraries\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="libraries\ImGui\imstb_textedit.h" />
+    <ClInclude Include="libraries\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="libraries\ImGui-SFML\LICENSE" />
     <None Include="src\Signal.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="libraries\ImGui\LICENSE.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

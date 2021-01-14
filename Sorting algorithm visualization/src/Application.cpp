@@ -7,16 +7,18 @@
 #include "MergeSort.h"
 #include "QuickSort.h"
 #include "GnomeSort.h"
+#include <ImGui/imgui.h>
+#include <ImGui-SFML/imgui-SFML.h>
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.0f / 60.0f);
 
 Application::Application()
 	: mWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Sorting Algorithms Visualization"),
+	mDelay(10),
 	mArraySize(10),
 	mRandomNumbers(mArraySize)
 {
-	initializeRandomNumbers();
-	registerVisualizers();
+	ImGui::SFML::Init(mWindow);
 
 	float screenWidth = static_cast<float>(mWindow.getSize().x);
 
@@ -25,6 +27,11 @@ Application::Application()
 	mGrid.border = 8.0f;
 	mGrid.columnSize = (screenWidth - mGrid.border * (mGrid.columns + 1)) / (4 * screenWidth);
 	mGrid.rowSize = mGrid.columnSize;
+}
+
+Application::~Application()
+{
+	ImGui::SFML::Shutdown();
 }
 
 void Application::run()
@@ -41,10 +48,15 @@ void Application::run()
 			timeSinceLastUpdate -= TimePerFrame;
 			while (mWindow.pollEvent(event))
 			{
+				ImGui::SFML::ProcessEvent(event);
 				if (event.type == sf::Event::Closed)
 					mWindow.close();
 			}
 		}
+
+		ImGui::SFML::Update(mWindow, TimePerFrame);
+		showConfigurationWindow();
+
 		render();
 	}
 }
@@ -67,19 +79,20 @@ void Application::render()
 		mWindow.draw(*mVisualizers[i]);
 	}
 
+	ImGui::SFML::Render(mWindow);
+
 	mWindow.display();
 }
 
 void Application::registerVisualizers()
 {
 	const sf::Vector2f viewSize = mWindow.getView().getSize();
-	const int delay = 10;
-	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new BubbleSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));
-	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new SelectionSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));
-	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new InsertionSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));
-	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new MergeSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));
-	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new QuickSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));
-	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new GnomeSort(mRandomNumbers, delay)), mRandomNumbers, viewSize)));
+	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new BubbleSort(mRandomNumbers, mDelay)), mRandomNumbers, viewSize)));
+	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new SelectionSort(mRandomNumbers, mDelay)), mRandomNumbers, viewSize)));
+	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new InsertionSort(mRandomNumbers, mDelay)), mRandomNumbers, viewSize)));
+	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new MergeSort(mRandomNumbers, mDelay)), mRandomNumbers, viewSize)));
+	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new QuickSort(mRandomNumbers, mDelay)), mRandomNumbers, viewSize)));
+	mVisualizers.push_back(Visualizer::Ptr(new Visualizer(SortingAlgorithm::Ptr(new GnomeSort(mRandomNumbers, mDelay)), mRandomNumbers, viewSize)));
 }
 
 void Application::initializeRandomNumbers()
@@ -87,4 +100,19 @@ void Application::initializeRandomNumbers()
 	srand(time(nullptr));
 	for (int& num : mRandomNumbers)
 		num = rand() % 10 + 1;
+}
+
+void Application::showConfigurationWindow()
+{
+	ImGui::SliderInt("Delay", &mDelay, 10, 5000, "%d ms");
+	if (ImGui::SliderInt("Array size", &mArraySize, 10, 100))
+		mRandomNumbers.resize(mArraySize);
+
+	if (ImGui::Button("Start"))
+	{
+		if (!mVisualizers.empty())
+			mVisualizers.clear();
+		initializeRandomNumbers();
+		registerVisualizers();
+	}
 }

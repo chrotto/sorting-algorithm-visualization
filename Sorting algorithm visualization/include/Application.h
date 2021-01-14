@@ -17,6 +17,7 @@ private:
 private:
 	sf::RenderWindow mWindow;
 
+	int mDelay;
 	int mArraySize;
 
 	vector<Visualizer::Ptr> mVisualizers;
@@ -28,6 +29,7 @@ private:
 
 public:
 	Application();
+	~Application();
 
 	void run();
 
@@ -35,4 +37,6 @@ private:
 	void render();
 	void registerVisualizers();
 	void initializeRandomNumbers();
+
+	void showConfigurationWindow();
 };
