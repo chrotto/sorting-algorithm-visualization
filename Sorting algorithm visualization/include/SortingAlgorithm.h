@@ -3,6 +3,7 @@
 #include <memory>
 #include <functional>
 #include <string>
+#include <condition_variable>
 #include "Signal.h"
 using namespace std;
 
@@ -24,10 +25,16 @@ private:
 	int mDelay;
 	string mName;
 
+	condition_variable mConditionalWait;
+	mutex mWaitMutex;
+
 public:
 	SortingAlgorithm(vector<int> sortArray, int delay, const string& name);
 
 	virtual void runSort() = 0;
+
+	void setDelay(int delay);
+	void wait();
 
 	const string& getName() const;
 

@@ -132,5 +132,10 @@ void Application::showConfigurationWindow()
 		initializeRandomNumbers();
 		registerVisualizers();
 	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop"))
+	{
+		mVisualizers.clear();
+	}
 	ImGui::End();
 }

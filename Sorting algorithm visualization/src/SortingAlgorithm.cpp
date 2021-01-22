@@ -7,6 +7,19 @@ SortingAlgorithm::SortingAlgorithm(vector<int> sortArray, int delay, const strin
 	// Nothing to do
 }
 
+void SortingAlgorithm::setDelay(int delay)
+{
+	unique_lock<mutex> lock(mWaitMutex);
+	mDelay = delay;
+	mConditionalWait.notify_one();
+}
+
+void SortingAlgorithm::wait()
+{
+	unique_lock<mutex> lock(mWaitMutex);
+	mConditionalWait.wait_for(lock, chrono::milliseconds(mDelay), [this] {return mDelay == 0; });
+}
+
 const string& SortingAlgorithm::getName() const
 {
 	return mName;
@@ -15,21 +28,21 @@ const string& SortingAlgorithm::getName() const
 void SortingAlgorithm::swap(int a, int b)
 {
 	mSwap.emit(a, b);
-	this_thread::sleep_for(chrono::milliseconds(mDelay));
+	wait();
 	std::swap(mSortArray[a], mSortArray[b]);
 }
 
 bool SortingAlgorithm::compare(int a, int b, function<bool(int, int)> compare)
 {
 	mComparison.emit(a, b);
-	this_thread::sleep_for(chrono::milliseconds(mDelay));
+	wait();
 	return compare(mSortArray[a], mSortArray[b]);
 }
 
 void SortingAlgorithm::updateValue(int index, int value)
 {
 	mValueUpdate.emit(index, value);
-	this_thread::sleep_for(chrono::milliseconds(mDelay));
+	wait();
 	mSortArray[index] = value;
 }
 
@@ -43,6 +56,6 @@ void SortingAlgorithm::markAsSorted()
 	for (int i = 0; i < mSortArray.size(); i++)
 	{
 		mSorted.emit(i);
-		this_thread::sleep_for(chrono::milliseconds(20));
+		wait();
 	}
 }

@@ -36,11 +36,12 @@ Visualizer::Visualizer(SortingAlgorithm::Ptr instance, vector<int> randomNumbers
 	mAlgorithm->mValueUpdate.connect(this, &Visualizer::onValueUpdate);
 	mAlgorithm->mPivotUpdate.connect(this, &Visualizer::onPivotUpdate);
 
-	mSortingThread = thread(&SortingAlgorithm::runSort, move(mAlgorithm));
+	mSortingThread = thread(&SortingAlgorithm::runSort, mAlgorithm.get());
 }
 
 Visualizer::~Visualizer()
 {
+	mAlgorithm->setDelay(0);
 	mSortingThread.join();
 }
 
