@@ -16,6 +16,7 @@ Application::Application()
 	: mWindow(sf::VideoMode(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height), "Sorting Algorithms Visualization"),
 	mDelay(10),
 	mArraySize(10),
+	mArrayStructure(ArrayStructure::Unsorted),
 	mRandomNumbers(mArraySize)
 {
 	ImGui::SFML::Init(mWindow);
@@ -100,13 +101,29 @@ void Application::initializeRandomNumbers()
 	srand(time(nullptr));
 	for (int& num : mRandomNumbers)
 		num = rand() % 10 + 1;
+
+	if (mArrayStructure == ArrayStructure::Sorted)
+		sort(mRandomNumbers.begin(), mRandomNumbers.end());
+	else if (mArrayStructure == ArrayStructure::InverseSorted)
+		sort(mRandomNumbers.begin(), mRandomNumbers.end(), [](const int& a, const int& b) {return a > b; });
 }
 
 void Application::showConfigurationWindow()
 {
+	ImGui::Begin("Configuration");
 	ImGui::SliderInt("Delay", &mDelay, 10, 5000, "%d ms");
 	if (ImGui::SliderInt("Array size", &mArraySize, 10, 100))
 		mRandomNumbers.resize(mArraySize);
+
+	ImGui::Text("Array structure");
+	if (ImGui::RadioButton("Unsorted", mArrayStructure == ArrayStructure::Unsorted))
+		mArrayStructure = ArrayStructure::Unsorted;
+	ImGui::SameLine();
+	if (ImGui::RadioButton("Sorted", mArrayStructure == ArrayStructure::Sorted))
+		mArrayStructure = ArrayStructure::Sorted;
+	ImGui::SameLine();
+	if (ImGui::RadioButton("Inverse sorted", mArrayStructure == ArrayStructure::InverseSorted))
+		mArrayStructure = ArrayStructure::InverseSorted;
 
 	if (ImGui::Button("Start"))
 	{
@@ -115,4 +132,5 @@ void Application::showConfigurationWindow()
 		initializeRandomNumbers();
 		registerVisualizers();
 	}
+	ImGui::End();
 }

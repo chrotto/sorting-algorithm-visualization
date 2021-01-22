@@ -14,11 +14,20 @@ private:
 		float border;
 	};
 
+	enum class ArrayStructure
+	{
+		Unsorted,
+		Sorted,
+		InverseSorted
+	};
+
 private:
 	sf::RenderWindow mWindow;
 
 	int mDelay;
 	int mArraySize;
+
+	ArrayStructure mArrayStructure;
 
 	vector<Visualizer::Ptr> mVisualizers;
 	vector<int> mRandomNumbers;
