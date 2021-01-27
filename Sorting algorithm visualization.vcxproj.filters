@@ -122,8 +122,13 @@
       <Filter>Quelldateien</Filter>
     </None>
     <None Include="libraries\ImGui-SFML\LICENSE" />
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="libraries\ImGui\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\OpenSans-SemiBold.ttf" />
   </ItemGroup>
 </Project>
