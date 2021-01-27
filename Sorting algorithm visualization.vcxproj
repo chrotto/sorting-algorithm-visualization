@@ -167,11 +167,16 @@
     <ClInclude Include="libraries\ImGui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
     <None Include="libraries\ImGui-SFML\LICENSE" />
     <None Include="src\Signal.inl" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="libraries\ImGui\LICENSE.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\OpenSans-SemiBold.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
