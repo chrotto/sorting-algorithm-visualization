@@ -124,6 +124,8 @@
     <None Include="libraries\ImGui-SFML\LICENSE" />
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
+    <None Include="README.md" />
+    <None Include="libraries\SFML\license.md" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="libraries\ImGui\LICENSE.txt" />

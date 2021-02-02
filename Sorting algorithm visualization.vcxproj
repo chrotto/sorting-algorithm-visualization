@@ -170,6 +170,8 @@
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
     <None Include="libraries\ImGui-SFML\LICENSE" />
+    <None Include="libraries\SFML\license.md" />
+    <None Include="README.md" />
     <None Include="src\Signal.inl" />
   </ItemGroup>
   <ItemGroup>
